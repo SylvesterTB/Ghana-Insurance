@@ -16,12 +16,17 @@ def get_place_lat_lng(place_name, district, country, region, api_key):
         results = response.json().get('results')
         if results:
             place = results[0] 
-            print(place) # Get the first result
+           # print(place) # Get the first result
+    
             location = place['geometry']['location']
             latitude = location['lat']
             longitude = location['lng']
             # formatted address and buisness status
-            return latitude, longitude
+            business_status = place.get('business_status', 'N/A')
+            formatted_address = place.get('formatted_address', 'N/A')
+            print( business_status, formatted_address)
+
+            return latitude, longitude,  
         else:
             print("No results found")
             return None
