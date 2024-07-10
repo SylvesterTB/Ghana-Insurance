@@ -30,16 +30,15 @@ def get_place_lat_lng(place_name, district, country, region, api_key):
     else:
         return None
 
-def compare_coordinates(csv_file, api_key, threshold=0.5, limit=50):
+def compare_coordinates(csv_file, api_key, threshold=0.5, limit=1000):
     df = pd.read_csv(csv_file)
     
     # Limit to the first `limit` rows
     df = df.head(limit)
-    
     results = []
     for index, row in df.iterrows():
-        csv_lat = row['Latitude']
-        csv_lng = row['Longitude']
+        csv_lat = row['latitude']
+        csv_lng = row['longitude']
         facility_name = row['FacilityName']
         district = row['District']
         country = row['Region']
@@ -58,8 +57,8 @@ def compare_coordinates(csv_file, api_key, threshold=0.5, limit=50):
             distance = geodesic(csv_coords, google_coords).kilometers
             
             is_accurate = 'true' if distance <= threshold else 'false'
-            
-            results.append([
+            if business_status == "OPERATIONAL":
+             results.append([
                 facility_name,
                 csv_lat,
                 csv_lng,
@@ -68,6 +67,27 @@ def compare_coordinates(csv_file, api_key, threshold=0.5, limit=50):
                 business_status,
                 is_accurate
             ])
+            elif business_status == "CLOSED_PERMANENTLY":
+                 results.append([
+                facility_name,
+                csv_lat,
+                csv_lng,
+                google_lat,
+                google_lng,
+                "CLOSED_PERMANENTLY",
+                is_accurate
+                ])
+            else:
+              results.append([
+                facility_name,
+                csv_lat,
+                csv_lng,
+                google_lat,
+                google_lng,
+                "NO DATA",
+                is_accurate
+
+])
         else:
             results.append([
                 facility_name,
@@ -75,10 +95,10 @@ def compare_coordinates(csv_file, api_key, threshold=0.5, limit=50):
                 csv_lng,
                 'N/A',
                 'N/A',
-                'N/A',
+                'NO DATA',
                 'false'
             ])
-    output_file = 'output.csv'
+    output_file = 'output4.csv'
     with open(output_file, 'w', newline='') as file:
         writer = csv.writer(file)
         writer.writerow(['FacilityName', 'CSV_Latitude', 'CSV_Longitude', 'Google_Latitude', 'Google_Longitude', 'Business_Status', 'Is_Accurate'])
@@ -88,7 +108,7 @@ def compare_coordinates(csv_file, api_key, threshold=0.5, limit=50):
 
 
     
-api_key = ''
+api_key = 'AIzaSyCKCfkDo_ieuEcQxeRXWJdpCwnyg1TM_qw'
 
 
 csv_file = 'healthFacilities.csv'
