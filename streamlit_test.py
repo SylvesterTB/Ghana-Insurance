@@ -64,6 +64,8 @@ if authentication_status:
 
     def main():
         st.title("Health Facilities Analysis")
+        st.header(""" A brief description:""")
+        st.write(""" The data in this app is regarding health facilities in Ghana, the full csv file is viewable below. The file contained longitude and latitude and the goal was to make a program that validated those coordinates by using Google Places API. Displayed below are graphs containing the amount of health facilities per region and how many are still Operational, unkown, or closed permanently. After that there is a map containing points of every health facility with valid coordinates.""" )
         
         csv_file = 'healthFacilities.csv'
         
