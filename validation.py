@@ -30,11 +30,11 @@ def get_place_lat_lng(place_name, district, country, region, api_key):
     else:
         return None
 
-def compare_coordinates(csv_file, api_key, threshold=0.5, limit=1000):
+def compare_coordinates(csv_file, api_key, threshold=0.5):
     df = pd.read_csv(csv_file)
     
     # Limit to the first `limit` rows
-    df = df.head(limit)
+    
     results = []
     for index, row in df.iterrows():
         csv_lat = row['latitude']
@@ -98,7 +98,7 @@ def compare_coordinates(csv_file, api_key, threshold=0.5, limit=1000):
                 'NO DATA',
                 'false'
             ])
-    output_file = 'output4.csv'
+    output_file = 'total_data.csv'
     with open(output_file, 'w', newline='') as file:
         writer = csv.writer(file)
         writer.writerow(['FacilityName', 'CSV_Latitude', 'CSV_Longitude', 'Google_Latitude', 'Google_Longitude', 'Business_Status', 'Is_Accurate'])
@@ -108,7 +108,7 @@ def compare_coordinates(csv_file, api_key, threshold=0.5, limit=1000):
 
 
     
-api_key = 'AIzaSyCKCfkDo_ieuEcQxeRXWJdpCwnyg1TM_qw'
+api_key = ''
 
 
 csv_file = 'healthFacilities.csv'

@@ -66,8 +66,13 @@ if authentication_status:
         st.title("Health Facilities Analysis")
         
         csv_file = 'healthFacilities.csv'
+        
+        df = pd.read_csv(csv_file)
+        st.subheader("Health Facilities Data")
+        st.dataframe(df)
+
         total_count = count_facilities(csv_file)
-        status_count = Operational_counter("output4.csv")
+        status_count = Operational_counter("total_data.csv")
         
         # Convert the dictionaries to DataFrames
         df_total_count = pd.DataFrame(list(total_count.items()), columns=['Region', 'Number of Facilities'])
@@ -90,14 +95,14 @@ if authentication_status:
     
 
         # Load the CSV file for mapping 
-        df = pd.read_csv('output.csv')
+        df = pd.read_csv('total_data.csv')
         
         # Filter for rows where Is_Accurate is true
         accurate_df = df[df['Is_Accurate'] == True]
 
-        # Display the map using Streamlit  
+        # Display the map using Streamlit   
         st.map(accurate_df, latitude = "Latitude", longitude="Longitude")
-    
+     
     if __name__ == "__main__":
         main()
 
